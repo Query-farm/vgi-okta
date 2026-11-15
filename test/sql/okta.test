@@ -1,0 +1,586 @@
+# name: test/sql/okta.test
+# description: SQL tests for the okta worker against the offline Okta replay server (test/mock_api/server.py)
+# group: [okta]
+
+require vgi
+
+require-env OKTA_WORKER
+
+require-env OKTA_FIXTURE_URL
+
+# httpfs + json read the replay server's /__requests log to assert what was pushed down.
+statement ok
+LOAD httpfs;
+
+statement ok
+LOAD json;
+
+statement ok
+ATTACH 'okta' (TYPE vgi, LOCATION '{OKTA_WORKER}');
+
+# ---------------------------------------------------------------- secret errors
+
+statement error
+SELECT count(*) FROM okta.main.users();
+----
+<REGEX>:.*no okta secret.*
+
+statement ok
+CREATE SECRET okta_bad (TYPE okta, ORG_URL '{OKTA_FIXTURE_URL}', API_TOKEN 'wrong-token');
+
+statement error
+SELECT count(*) FROM okta.main.users();
+----
+<REGEX>:.*HTTP 401.*E0000011.*
+
+statement ok
+DROP SECRET okta_bad;
+
+statement ok
+CREATE SECRET okta_insecure (TYPE okta, ORG_URL 'http://acme.okta.com', API_TOKEN 'x');
+
+statement error
+SELECT count(*) FROM okta.main.users();
+----
+<REGEX>:.*https.*
+
+statement ok
+DROP SECRET okta_insecure;
+
+statement ok
+CREATE SECRET okta_fixture (TYPE okta, ORG_URL '{OKTA_FIXTURE_URL}', API_TOKEN 'test-token');
+
+# ------------------------------------------------------------------------ users
+
+# Okta omits DEPROVISIONED users from an unfiltered list.
+query TTTT
+SELECT id, login, status, account_enabled FROM okta.main.users() ORDER BY id;
+----
+00u1ada	ada@example.com	ACTIVE	true
+00u2grace	grace@example.com	ACTIVE	true
+00u3alan	alan@example.com	SUSPENDED	false
+00u4kat	kat@example.com	ACTIVE	true
+00u6margaret	margaret@example.com	STAGED	false
+00u7radia	radia@example.com	LOCKED_OUT	false
+
+# Several pages: the Link-header cursor carries across batches.
+query II
+SELECT count(*), count(DISTINCT id) FROM okta.main.users(page_size := 2);
+----
+6	6
+
+query I
+SELECT count(*) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') WHERE query LIKE '%"limit": "2"%';
+----
+3
+
+# Pushdown: both predicates become one Okta search expression.
+query T
+SELECT login FROM okta.main.users() WHERE department = 'Engineering' AND status = 'ACTIVE' ORDER BY login;
+----
+ada@example.com
+grace@example.com
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+profile.department eq "Engineering" and status eq "ACTIVE"
+
+# Okta matches case-insensitively ('engineering' also matches Margaret's lower-case
+# department); the SDK re-applies the SQL predicate, so results stay exact.
+query T
+SELECT login FROM okta.main.users() WHERE department = 'engineering';
+----
+margaret@example.com
+
+# A filter on status reaches deprovisioned users (as Okta's search does).
+query TT
+SELECT login, account_enabled FROM okta.main.users() WHERE status = 'DEPROVISIONED';
+----
+linus@example.com	false
+
+query T
+SELECT login FROM okta.main.users() WHERE status IN ('SUSPENDED', 'LOCKED_OUT') ORDER BY login;
+----
+alan@example.com
+radia@example.com
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+(status eq "SUSPENDED" or status eq "LOCKED_OUT")
+
+query T
+SELECT login FROM okta.main.users() WHERE last_updated >= TIMESTAMPTZ '2026-11-01 00:00:00+00' ORDER BY login;
+----
+grace@example.com
+margaret@example.com
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+lastUpdated ge "2026-11-01T00:00:00.000Z"
+
+# starts_with / LIKE 'x%' arrive as a range and push down as `sw`.
+query T
+SELECT login FROM okta.main.users() WHERE starts_with(login, 'gr');
+----
+grace@example.com
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+<REGEX>:.*profile.login sw "gr".*
+
+query T
+SELECT login FROM okta.main.users() WHERE account_enabled ORDER BY login;
+----
+ada@example.com
+grace@example.com
+kat@example.com
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+status eq "ACTIVE"
+
+# A raw search expression (custom profile attribute) combines with pushed filters.
+query TT
+SELECT login, profile->>'costCenter' FROM okta.main.users(search := 'profile.costCenter eq "42"') WHERE status = 'ACTIVE';
+----
+ada@example.com	42
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') ORDER BY seq DESC LIMIT 1;
+----
+(profile.costCenter eq "42") and status eq "ACTIVE"
+
+# A filter that cannot be pushed is applied by DuckDB/SDK on the full list.
+query T
+SELECT login FROM okta.main.users() WHERE status <> 'ACTIVE' AND title LIKE '%t%' ORDER BY login;
+----
+margaret@example.com
+radia@example.com
+
+# A malformed raw search surfaces Okta's 400.
+statement error
+SELECT * FROM okta.main.users(search := 'profile.login eq');
+----
+<REGEX>:.*HTTP 400.*
+
+query TTTTT
+SELECT display_name, manager_id, employee_number, credential_provider, typeof(last_login) FROM okta.main.users() WHERE id IN ('00u2grace', '00u4kat', '00u6margaret') ORDER BY id;
+----
+Grace Hopper	00u1ada	1002	OKTA	TIMESTAMP WITH TIME ZONE
+Katherine Johnson	NULL	NULL	ACTIVE_DIRECTORY	TIMESTAMP WITH TIME ZONE
+Margaret H.	NULL	NULL	OKTA	TIMESTAMP WITH TIME ZONE
+
+query TT
+SELECT id, last_login FROM okta.main.user('ada@example.com');
+----
+00u1ada	2026-11-14 08:30:00+00
+
+query I
+SELECT count(*) FROM okta.main.user('nobody@example.com');
+----
+0
+
+query T
+SELECT display_name FROM okta.main.user_groups(user_id := '00u1ada') ORDER BY display_name;
+----
+Engineering
+Everyone
+Okta Admins
+
+query TTT
+SELECT factor_type, provider, status FROM okta.main.user_factors(user_id := 'ada@example.com') ORDER BY factor_type;
+----
+push	OKTA	ACTIVE
+token:software:totp	GOOGLE	ACTIVE
+webauthn	FIDO	ACTIVE
+
+# Org-wide: every (non-deprovisioned) user's factors.
+query TI
+SELECT factor_type, count(DISTINCT user_id) FROM okta.main.user_factors() GROUP BY ALL ORDER BY ALL;
+----
+push	1
+sms	1
+token:software:totp	1
+webauthn	1
+
+# Factor profiles (phone numbers, device names) are never exposed.
+query I
+SELECT count(*) FROM okta.main.user_factors(user_id := '00u2grace') WHERE factor_type = 'sms' AND status = 'PENDING_ACTIVATION';
+----
+1
+
+# ----------------------------------------------------------------------- groups
+
+query TTT
+SELECT id, display_name, group_type FROM okta.main.groups() ORDER BY id;
+----
+00g1everyone	Everyone	BUILT_IN
+00g2eng	Engineering	OKTA_GROUP
+00g3sales	Sales	OKTA_GROUP
+00g4ad	Domain Admins	APP_GROUP
+00g5admins	Okta Admins	OKTA_GROUP
+
+query TT
+SELECT display_name, object_class FROM okta.main.groups() WHERE group_type = 'APP_GROUP';
+----
+Domain Admins	['okta:windows_security_principal']
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups') ORDER BY seq DESC LIMIT 1;
+----
+type eq "APP_GROUP"
+
+query TT
+SELECT user_id, login FROM okta.main.group_members(group_id := '00g2eng', page_size := 3) ORDER BY user_id;
+----
+00u1ada	ada@example.com
+00u2grace	grace@example.com
+00u5linus	linus@example.com
+00u6margaret	margaret@example.com
+
+# Org-wide membership: with no group_id every group is listed, then read in turn.
+query TI
+SELECT g.display_name, count(*) FROM okta.main.group_members(page_size := 2) m JOIN okta.main.groups() g ON g.id = m.group_id GROUP BY ALL ORDER BY ALL;
+----
+Domain Admins	1
+Engineering	4
+Everyone	6
+Okta Admins	2
+Sales	1
+
+# A pushed `group_id IN (…)` reads only those groups.
+statement ok
+CREATE TEMP TABLE before_members AS SELECT count(*) AS n FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups/00g3sales/users');
+
+query TT
+SELECT group_id, login FROM okta.main.group_members() WHERE group_id IN ('00g3sales', '00g4ad') ORDER BY ALL;
+----
+00g3sales	kat@example.com
+00g4ad	grace@example.com
+
+query I
+SELECT (SELECT count(*) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups/00g3sales/users')) - (SELECT n FROM before_members);
+----
+1
+
+query I
+SELECT count(*) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups/00g1everyone/users') WHERE seq > (SELECT max(seq) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups/00g3sales/users'));
+----
+0
+
+# The first group_rules request is rate-limited (429, X-Rate-Limit-Reset): retried.
+query TTTT
+SELECT name, status, assign_group_ids, excluded_user_ids FROM okta.main.group_rules() ORDER BY name;
+----
+Engineers by department	ACTIVE	[00g2eng]	[00u5linus]
+Legacy contractors	INVALID	[00g9deleted]	[]
+
+query I
+SELECT count(*) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/groups/rules');
+----
+2
+
+# ------------------------------------------------------------------------- apps
+
+query TTTT
+SELECT id, label, status, sign_on_mode FROM okta.main.apps() ORDER BY id;
+----
+0oa1salesforce	Salesforce	ACTIVE	SAML_2_0
+0oa2github	GitHub Enterprise	ACTIVE	SAML_2_0
+0oa3portal	Internal Portal	ACTIVE	OPENID_CONNECT
+0oa4wiki	Old Wiki	INACTIVE	BOOKMARK
+
+query T
+SELECT label FROM okta.main.apps() WHERE status = 'INACTIVE';
+----
+Old Wiki
+
+query T
+SELECT query::JSON->>'filter' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/apps') ORDER BY seq DESC LIMIT 1;
+----
+status eq "INACTIVE"
+
+# The fixture's OIDC app carries a client secret; no column may expose it.
+query I
+SELECT count(*) FROM okta.main.apps() a WHERE a::VARCHAR LIKE '%MUST-NOT-LEAK%';
+----
+0
+
+query TTT
+SELECT user_name, scope, sync_state FROM okta.main.app_users(app_id := '0oa1salesforce') ORDER BY user_name;
+----
+ada@example.com	USER	SYNCHRONIZED
+grace@example.com	USER	ERROR
+kat@example.com	GROUP	SYNCHRONIZED
+
+query TTI
+SELECT a.group_id, g.display_name, a.priority FROM okta.main.app_groups(app_id := '0oa2github') a JOIN okta.main.groups() g ON g.id = a.group_id ORDER BY a.priority;
+----
+00g2eng	Engineering	0
+00g5admins	Okta Admins	1
+
+statement error
+SELECT * FROM okta.main.app_users(app_id := '0oa1salesforce', page_size := 0);
+----
+<REGEX>:.*
+
+# --------------------------------------------------------------------- policies
+
+query TTTI
+SELECT type, name, status, priority FROM okta.main.policies ORDER BY type, priority;
+----
+ACCESS_POLICY	Any two factors	ACTIVE	1
+IDP_DISCOVERY	Idp Discovery Policy	ACTIVE	1
+MFA_ENROLL	Default Policy	ACTIVE	1
+OKTA_SIGN_ON	Admins MFA	ACTIVE	1
+OKTA_SIGN_ON	Default Policy	ACTIVE	2
+PASSWORD	Strong Passwords	ACTIVE	1
+PASSWORD	Default Policy	ACTIVE	2
+PROFILE_ENROLLMENT	Default Policy	INACTIVE	1
+
+# policies is a table; `type =` selects which policy types are requested at all.
+statement ok
+CREATE TEMP TABLE before_policies AS SELECT count(*) AS n FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/policies');
+
+query T
+SELECT name FROM okta.main.policies WHERE type = 'PASSWORD' AND status = 'ACTIVE' ORDER BY priority;
+----
+Strong Passwords
+Default Policy
+
+query TT
+SELECT query::JSON->>'type', query::JSON->>'status' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/policies') WHERE seq > 0 ORDER BY seq DESC LIMIT 1;
+----
+PASSWORD	ACTIVE
+
+query I
+SELECT count(*) - (SELECT n FROM before_policies) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/policies');
+----
+1
+
+query TT
+SELECT p.name, count(*) FROM okta.main.policy_rules() r JOIN okta.main.policies p ON p.id = r.policy_id GROUP BY ALL;
+----
+Default Policy	2
+
+query TTTT
+SELECT name, priority, system, actions->'signon'->>'requireFactor' FROM okta.main.policy_rules(policy_id := '00p1signon') ORDER BY priority;
+----
+Admins require MFA	1	false	true
+Default Rule	2	true	false
+
+query TTTT
+SELECT name, issuer_mode, status, audiences FROM okta.main.authorization_servers() ORDER BY name;
+----
+Partner API	CUSTOM_URL	INACTIVE	['api://partners', 'https://partners.example.com']
+default	ORG_URL	ACTIVE	['api://default']
+
+query T
+SELECT issuer = '{OKTA_FIXTURE_URL}/oauth2/default' FROM okta.main.authorization_servers() WHERE id = 'default';
+----
+true
+
+# ----------------------------------------------------------------- admin roles
+
+query TTTTT
+SELECT principal_type, principal_id, role_type, assignment_type, resource_set FROM okta.main.admin_role_assignments() ORDER BY principal_id, role_type;
+----
+USER	00u1ada	SUPER_ADMIN	USER	NULL
+USER	00u4kat	CUSTOM	USER	iam0salesset
+USER	00u4kat	HELP_DESK_ADMIN	GROUP	NULL
+
+query TT
+SELECT principal_type, role_label FROM okta.main.admin_role_assignments(group_id := '00g5admins');
+----
+GROUP	Help Desk Administrator
+
+query T
+SELECT role_type FROM okta.main.admin_role_assignments(user_id := 'ada@example.com');
+----
+SUPER_ADMIN
+
+# ---------------------------------------------------------------------- devices
+
+query TTTTT
+SELECT display_name, operating_system, account_enabled, secure_hardware_present, user_ids FROM okta.main.devices() ORDER BY id;
+----
+Ada's MacBook Pro	MACOS	true	true	[00u1ada]
+GRACE-PC	WINDOWS	true	false	[00u2grace]
+Kat's iPhone	IOS	false	true	[00u4kat]
+LAB-PC-07	WINDOWS	false	false	[]
+
+query TI
+SELECT operating_system, count(*) FROM okta.main.devices() WHERE status = 'ACTIVE' AND operating_system = 'WINDOWS' GROUP BY ALL;
+----
+WINDOWS	1
+
+query T
+SELECT query::JSON->>'search' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/devices') ORDER BY seq DESC LIMIT 1;
+----
+status eq "ACTIVE" and profile.platform eq "WINDOWS"
+
+# ---------------------------------------------------------------- network zones
+
+# The first zones request answers 503; it is retried.
+query TTTT
+SELECT name, type, usage, gateways FROM okta.main.network_zones ORDER BY name;
+----
+Allowed countries	DYNAMIC	POLICY	NULL
+Blocked IPs	IP	BLOCKLIST	[203.0.113.0/24, 198.51.100.7-198.51.100.9]
+LegacyIpZone	IP	POLICY	[10.0.0.0/8]
+
+query TTT
+SELECT locations, asns, proxy_type FROM okta.main.network_zones WHERE usage = 'POLICY' AND type = 'DYNAMIC';
+----
+[US, CA-ON]	[13335]	NOT_TOR
+
+query T
+SELECT query::JSON->>'filter' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/zones') ORDER BY seq DESC LIMIT 1;
+----
+usage eq "POLICY"
+
+# ------------------------------------------------------------------- system log
+
+# Default window: the last 7 days (events 1-6 and 10 of the fixture), bounded by
+# `until`, so Okta's never-ending ASCENDING poll link does not apply.
+query I
+SELECT count(*) FROM okta.main.system_log();
+----
+7
+
+query TT
+SELECT (query::JSON->>'until') IS NOT NULL, query::JSON->>'sortOrder' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/logs') ORDER BY seq DESC LIMIT 1;
+----
+true	ASCENDING
+
+# A lower bound on published becomes `since`; past the 90-day retention it is clamped
+# (Okta would answer 400), so the 100-day-old event is never requested.
+query I
+SELECT count(*) FROM okta.main.system_log() WHERE published > (now()::TIMESTAMP - INTERVAL 120 DAY)::TIMESTAMPTZ;
+----
+9
+
+query I
+SELECT count(*) FROM okta.main.system_log(lookback_days := 31) WHERE created_date_time < (now()::TIMESTAMP - INTERVAL 1 DAY)::TIMESTAMPTZ;
+----
+3
+
+query TTT
+SELECT actor_alternate_id, outcome_reason, count(*) FROM okta.main.system_log() WHERE event_type = 'user.session.start' AND outcome_result = 'FAILURE' GROUP BY ALL ORDER BY ALL;
+----
+alan@example.com	INVALID_CREDENTIALS	2
+grace@example.com	VERIFICATION_ERROR	1
+
+query T
+SELECT query::JSON->>'filter' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/logs') ORDER BY seq DESC LIMIT 1;
+----
+eventType eq "user.session.start" and outcome.result eq "FAILURE"
+
+query T
+SELECT event_type FROM okta.main.system_log(page_size := 2) WHERE starts_with(event_type, 'user.authentication.') ORDER BY published;
+----
+user.authentication.auth_via_mfa
+user.authentication.sso
+
+query TTT
+SELECT user_principal_name, app_display_name, targets[1].type FROM okta.main.system_log() WHERE event_type = 'user.authentication.sso';
+----
+ada@example.com	Salesforce	AppInstance
+
+query I
+SELECT count(*) FROM okta.main.system_log(q := 'INVALID_CREDENTIALS');
+----
+2
+
+query T
+SELECT event_type FROM okta.main.system_log(sort_order := 'DESCENDING') LIMIT 1;
+----
+user.authentication.sso
+
+query TT
+SELECT severity, ip_address FROM okta.main.system_log() WHERE actor_id = '00u3alan' AND severity = 'WARN';
+----
+WARN	203.0.113.9
+
+query TTT
+SELECT typeof(published), typeof(geo_lat), typeof(debug_data) FROM okta.main.system_log() LIMIT 1;
+----
+TIMESTAMP WITH TIME ZONE	DOUBLE	JSON
+
+# An empty window issues no request at all.
+query I
+SELECT count(*) FROM okta.main.system_log() WHERE published < (now()::TIMESTAMP - INTERVAL 200 DAY)::TIMESTAMPTZ;
+----
+0
+
+statement error
+SELECT * FROM okta.main.system_log(sort_order := 'SIDEWAYS');
+----
+<REGEX>:.*
+
+statement error
+SELECT * FROM okta.main.system_log(lookback_days := 91);
+----
+<REGEX>:.*
+
+# Entra-aligned columns UNION with an Entra-shaped relation.
+query TT
+SELECT source, count(*) FROM (
+  SELECT 'okta' AS source, user_principal_name, display_name, account_enabled FROM okta.main.users()
+  UNION ALL
+  SELECT 'entra', 'x@contoso.com', 'X', true
+) GROUP BY source ORDER BY source;
+----
+entra	1
+okta	6
+
+statement ok
+DROP SECRET okta_fixture;
+
+# ------------------------------------------- OAuth 2.0 service app (private_key_jwt)
+
+# EC P-256 key (ES256), PEM with literal \n escapes; the replay server verifies the
+# signed client assertion and enforces the granted scopes.
+statement ok
+CREATE SECRET okta_service (TYPE okta, ORG_URL '{OKTA_FIXTURE_URL}', CLIENT_ID '0oaserviceappec', KEY_ID 'kid-ec', SCOPES 'okta.users.read okta.groups.read', PRIVATE_KEY '-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg8/2jmKU/sbRa8KGd\n45l8qdwBce/MILRUwiX+EspV3B6hRANCAARvBEGvc/RlU+7jA03ZHJi2UhSOj9M2\nb//bBdMSieu4xU+n2tHSq4A9PIkdkjUFF1e5Z1s2rJtT2Gpqt4dHfBqV\n-----END PRIVATE KEY-----\n');
+
+query I
+SELECT count(*) FROM okta.main.users(page_size := 4);
+----
+6
+
+query T
+SELECT DISTINCT auth FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/api/v1/users') WHERE seq > (SELECT max(seq) FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/oauth2/v1/token'));
+----
+bearer
+
+query T
+SELECT query::JSON->>'scope' FROM read_json('{OKTA_FIXTURE_URL}/__requests?path=/oauth2/v1/token') ORDER BY seq DESC LIMIT 1;
+----
+okta.users.read okta.groups.read
+
+# The token was not granted okta.logs.read: Okta answers 403.
+statement error
+SELECT count(*) FROM okta.main.system_log();
+----
+<REGEX>:.*HTTP 403.*
+
+statement ok
+DROP SECRET okta_service;
+
+# An unknown service app is rejected at the token endpoint.
+statement ok
+CREATE SECRET okta_unknown (TYPE okta, ORG_URL '{OKTA_FIXTURE_URL}', CLIENT_ID '0oanotregistered', PRIVATE_KEY '-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQg8/2jmKU/sbRa8KGd\n45l8qdwBce/MILRUwiX+EspV3B6hRANCAARvBEGvc/RlU+7jA03ZHJi2UhSOj9M2\nb//bBdMSieu4xU+n2tHSq4A9PIkdkjUFF1e5Z1s2rJtT2Gpqt4dHfBqV\n-----END PRIVATE KEY-----\n');
+
+statement error
+SELECT count(*) FROM okta.main.groups();
+----
+<REGEX>:.*token request failed with HTTP 401.*
+
+statement ok
+DROP SECRET okta_unknown;

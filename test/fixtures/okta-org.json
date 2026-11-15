@@ -1,0 +1,2134 @@
+{
+ "_comment": "Hand-built Okta org fixture following the Okta Management API's documented response shapes. Links use https://acme.okta.com and are rewritten to the replay server's origin; System Log published times are offsets (minutes before the server started) so retention windows stay valid.",
+ "users": [
+  {
+   "id": "00u1ada",
+   "status": "ACTIVE",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2026-10-01T12:00:00.000Z",
+   "lastLogin": "2026-11-14T08:30:00.000Z",
+   "lastUpdated": "2026-10-01T12:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Ada",
+    "lastName": "Lovelace",
+    "login": "ada@example.com",
+    "email": "ada@example.com",
+    "department": "Engineering",
+    "title": "Principal Engineer",
+    "mobilePhone": null,
+    "secondEmail": null,
+    "employeeNumber": "1001",
+    "costCenter": "42"
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u1ada"
+    }
+   }
+  },
+  {
+   "id": "00u2grace",
+   "status": "ACTIVE",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2026-11-05T10:00:00.000Z",
+   "lastLogin": "2026-11-13T17:00:00.000Z",
+   "lastUpdated": "2026-11-05T10:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Grace",
+    "lastName": "Hopper",
+    "login": "grace@example.com",
+    "email": "grace@example.com",
+    "department": "Engineering",
+    "title": "Rear Admiral",
+    "mobilePhone": null,
+    "secondEmail": null,
+    "employeeNumber": "1002",
+    "managerId": "00u1ada"
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u2grace"
+    }
+   }
+  },
+  {
+   "id": "00u3alan",
+   "status": "SUSPENDED",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2026-06-01T00:00:00.000Z",
+   "lastLogin": null,
+   "lastUpdated": "2026-06-01T00:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Alan",
+    "lastName": "Turing",
+    "login": "alan@example.com",
+    "email": "alan@example.com",
+    "department": "Research",
+    "title": "Fellow",
+    "mobilePhone": null,
+    "secondEmail": null
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u3alan"
+    }
+   }
+  },
+  {
+   "id": "00u4kat",
+   "status": "ACTIVE",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2026-09-15T00:00:00.000Z",
+   "lastLogin": "2026-11-01T09:00:00.000Z",
+   "lastUpdated": "2026-09-15T00:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Katherine",
+    "lastName": "Johnson",
+    "login": "kat@example.com",
+    "email": "kat@example.com",
+    "department": "Sales",
+    "title": "Account Executive",
+    "mobilePhone": null,
+    "secondEmail": null
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "ACTIVE_DIRECTORY",
+     "name": "corp.example.com"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u4kat"
+    }
+   }
+  },
+  {
+   "id": "00u5linus",
+   "status": "DEPROVISIONED",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2025-12-01T00:00:00.000Z",
+   "lastLogin": null,
+   "lastUpdated": "2025-12-01T00:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Linus",
+    "lastName": "Torvalds",
+    "login": "linus@example.com",
+    "email": "linus@example.com",
+    "department": "Engineering",
+    "title": "Contractor",
+    "mobilePhone": null,
+    "secondEmail": null
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u5linus"
+    }
+   }
+  },
+  {
+   "id": "00u6margaret",
+   "status": "STAGED",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": null,
+   "statusChanged": "2026-11-10T00:00:00.000Z",
+   "lastLogin": null,
+   "lastUpdated": "2026-11-10T00:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Margaret",
+    "lastName": "Hamilton",
+    "login": "margaret@example.com",
+    "email": "margaret@example.com",
+    "department": "engineering",
+    "title": "Director",
+    "mobilePhone": null,
+    "secondEmail": null,
+    "displayName": "Margaret H."
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u6margaret"
+    }
+   }
+  },
+  {
+   "id": "00u7radia",
+   "status": "LOCKED_OUT",
+   "created": "2024-01-10T09:00:00.000Z",
+   "activated": "2024-01-10T09:00:00.000Z",
+   "statusChanged": "2026-08-20T00:00:00.000Z",
+   "lastLogin": null,
+   "lastUpdated": "2026-08-20T00:00:00.000Z",
+   "passwordChanged": "2024-01-10T09:00:00.000Z",
+   "type": {
+    "id": "oty1default"
+   },
+   "profile": {
+    "firstName": "Radia",
+    "lastName": "Perlman",
+    "login": "radia@example.com",
+    "email": "radia@example.com",
+    "department": "Networking",
+    "title": "Architect",
+    "mobilePhone": null,
+    "secondEmail": null
+   },
+   "credentials": {
+    "password": {},
+    "provider": {
+     "type": "OKTA",
+     "name": "OKTA"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/users/00u7radia"
+    }
+   }
+  }
+ ],
+ "groups": [
+  {
+   "id": "00g1everyone",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2024-01-01T00:00:00.000Z",
+   "lastMembershipUpdated": "2026-11-10T00:00:00.000Z",
+   "objectClass": [
+    "okta:user_group"
+   ],
+   "type": "BUILT_IN",
+   "profile": {
+    "name": "Everyone",
+    "description": "All users in your organization"
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/groups/00g1everyone"
+    }
+   }
+  },
+  {
+   "id": "00g2eng",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2025-02-01T00:00:00.000Z",
+   "lastMembershipUpdated": "2026-11-10T00:00:00.000Z",
+   "objectClass": [
+    "okta:user_group"
+   ],
+   "type": "OKTA_GROUP",
+   "profile": {
+    "name": "Engineering",
+    "description": "Engineering staff"
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/groups/00g2eng"
+    }
+   }
+  },
+  {
+   "id": "00g3sales",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2025-02-01T00:00:00.000Z",
+   "lastMembershipUpdated": "2026-09-15T00:00:00.000Z",
+   "objectClass": [
+    "okta:user_group"
+   ],
+   "type": "OKTA_GROUP",
+   "profile": {
+    "name": "Sales",
+    "description": "Sales team"
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/groups/00g3sales"
+    }
+   }
+  },
+  {
+   "id": "00g4ad",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2025-03-01T00:00:00.000Z",
+   "lastMembershipUpdated": "2026-05-01T00:00:00.000Z",
+   "objectClass": [
+    "okta:windows_security_principal"
+   ],
+   "type": "APP_GROUP",
+   "profile": {
+    "name": "Domain Admins",
+    "description": "Imported from Active Directory",
+    "samAccountName": "Domain Admins",
+    "dn": "CN=Domain Admins,CN=Users,DC=corp,DC=example,DC=com"
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/groups/00g4ad"
+    }
+   }
+  },
+  {
+   "id": "00g5admins",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2025-04-01T00:00:00.000Z",
+   "lastMembershipUpdated": "2026-07-01T00:00:00.000Z",
+   "objectClass": [
+    "okta:user_group"
+   ],
+   "type": "OKTA_GROUP",
+   "profile": {
+    "name": "Okta Admins",
+    "description": "Help desk administrators"
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/groups/00g5admins"
+    }
+   }
+  }
+ ],
+ "group_members": {
+  "00g1everyone": [
+   "00u1ada",
+   "00u2grace",
+   "00u3alan",
+   "00u4kat",
+   "00u6margaret",
+   "00u7radia"
+  ],
+  "00g2eng": [
+   "00u1ada",
+   "00u2grace",
+   "00u5linus",
+   "00u6margaret"
+  ],
+  "00g3sales": [
+   "00u4kat"
+  ],
+  "00g4ad": [
+   "00u2grace"
+  ],
+  "00g5admins": [
+   "00u1ada",
+   "00u4kat"
+  ]
+ },
+ "factors": {
+  "00u1ada": [
+   {
+    "id": "opf1push",
+    "factorType": "push",
+    "provider": "OKTA",
+    "vendorName": "OKTA",
+    "status": "ACTIVE",
+    "created": "2025-01-05T00:00:00.000Z",
+    "lastUpdated": "2025-01-05T00:00:00.000Z",
+    "profile": {
+     "deviceType": "SmartPhone_IPhone",
+     "name": "Ada iPhone"
+    }
+   },
+   {
+    "id": "uft1totp",
+    "factorType": "token:software:totp",
+    "provider": "GOOGLE",
+    "vendorName": "GOOGLE",
+    "status": "ACTIVE",
+    "created": "2025-01-05T00:00:00.000Z",
+    "lastUpdated": "2025-01-05T00:00:00.000Z",
+    "profile": {
+     "credentialId": "ada@example.com"
+    }
+   },
+   {
+    "id": "fwf1webauthn",
+    "factorType": "webauthn",
+    "provider": "FIDO",
+    "vendorName": "FIDO",
+    "status": "ACTIVE",
+    "created": "2025-01-05T00:00:00.000Z",
+    "lastUpdated": "2025-01-05T00:00:00.000Z",
+    "profile": {
+     "authenticatorName": "YubiKey 5"
+    }
+   }
+  ],
+  "00u2grace": [
+   {
+    "id": "sms1grace",
+    "factorType": "sms",
+    "provider": "OKTA",
+    "vendorName": "OKTA",
+    "status": "PENDING_ACTIVATION",
+    "created": "2025-01-05T00:00:00.000Z",
+    "lastUpdated": "2025-01-05T00:00:00.000Z",
+    "profile": {
+     "phoneNumber": "+15555550100"
+    }
+   }
+  ]
+ },
+ "apps": [
+  {
+   "id": "0oa1salesforce",
+   "name": "salesforce",
+   "label": "Salesforce",
+   "status": "ACTIVE",
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-01T00:00:00.000Z",
+   "signOnMode": "SAML_2_0",
+   "features": [
+    "PUSH_NEW_USERS",
+    "PUSH_PROFILE_UPDATES"
+   ],
+   "accessibility": {
+    "selfService": true,
+    "errorRedirectUrl": null
+   },
+   "visibility": {
+    "autoSubmitToolbar": false,
+    "hide": {
+     "iOS": false,
+     "web": false
+    }
+   },
+   "settings": {
+    "app": {}
+   },
+   "credentials": {
+    "userNameTemplate": {
+     "template": "${source.login}",
+     "type": "BUILT_IN"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/apps/0oa1salesforce"
+    }
+   }
+  },
+  {
+   "id": "0oa2github",
+   "name": "github",
+   "label": "GitHub Enterprise",
+   "status": "ACTIVE",
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-01T00:00:00.000Z",
+   "signOnMode": "SAML_2_0",
+   "features": [],
+   "accessibility": {
+    "selfService": false,
+    "errorRedirectUrl": null
+   },
+   "visibility": {
+    "autoSubmitToolbar": false,
+    "hide": {
+     "iOS": false,
+     "web": false
+    }
+   },
+   "settings": {
+    "app": {}
+   },
+   "credentials": {
+    "userNameTemplate": {
+     "template": "${source.login}",
+     "type": "BUILT_IN"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/apps/0oa2github"
+    }
+   }
+  },
+  {
+   "id": "0oa3portal",
+   "name": "oidc_client",
+   "label": "Internal Portal",
+   "status": "ACTIVE",
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-01T00:00:00.000Z",
+   "signOnMode": "OPENID_CONNECT",
+   "features": [],
+   "accessibility": {
+    "selfService": false,
+    "errorRedirectUrl": null
+   },
+   "visibility": {
+    "autoSubmitToolbar": false,
+    "hide": {
+     "iOS": false,
+     "web": false
+    }
+   },
+   "settings": {
+    "app": {}
+   },
+   "credentials": {
+    "userNameTemplate": {
+     "template": "${source.login}",
+     "type": "BUILT_IN"
+    },
+    "oauthClient": {
+     "client_id": "0oa3portal",
+     "client_secret": "FIXTURE-CLIENT-SECRET-MUST-NOT-LEAK",
+     "token_endpoint_auth_method": "client_secret_basic"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/apps/0oa3portal"
+    }
+   }
+  },
+  {
+   "id": "0oa4wiki",
+   "name": "bookmark",
+   "label": "Old Wiki",
+   "status": "INACTIVE",
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-01T00:00:00.000Z",
+   "signOnMode": "BOOKMARK",
+   "features": [],
+   "accessibility": {
+    "selfService": false,
+    "errorRedirectUrl": null
+   },
+   "visibility": {
+    "autoSubmitToolbar": false,
+    "hide": {
+     "iOS": false,
+     "web": true
+    }
+   },
+   "settings": {
+    "app": {}
+   },
+   "credentials": {
+    "userNameTemplate": {
+     "template": "${source.login}",
+     "type": "BUILT_IN"
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/apps/0oa4wiki"
+    }
+   }
+  }
+ ],
+ "app_users": {
+  "0oa1salesforce": [
+   {
+    "id": "00u1ada",
+    "externalId": "ext-00u1ada",
+    "created": "2025-02-01T00:00:00.000Z",
+    "lastUpdated": "2026-10-01T00:00:00.000Z",
+    "scope": "USER",
+    "status": "ACTIVE",
+    "statusChanged": "2025-02-01T00:00:00.000Z",
+    "passwordChanged": null,
+    "syncState": "SYNCHRONIZED",
+    "credentials": {
+     "userName": "ada@example.com"
+    },
+    "profile": {
+     "role": "Standard"
+    },
+    "_links": {
+     "self": {
+      "href": "https://acme.okta.com/api/v1/users/00u1ada"
+     }
+    }
+   },
+   {
+    "id": "00u2grace",
+    "externalId": "ext-00u2grace",
+    "created": "2025-02-01T00:00:00.000Z",
+    "lastUpdated": "2026-10-01T00:00:00.000Z",
+    "scope": "USER",
+    "status": "ACTIVE",
+    "statusChanged": "2025-02-01T00:00:00.000Z",
+    "passwordChanged": null,
+    "syncState": "ERROR",
+    "credentials": {
+     "userName": "grace@example.com"
+    },
+    "profile": {
+     "role": "Standard"
+    },
+    "_links": {
+     "self": {
+      "href": "https://acme.okta.com/api/v1/users/00u2grace"
+     }
+    }
+   },
+   {
+    "id": "00u4kat",
+    "externalId": "ext-00u4kat",
+    "created": "2025-02-01T00:00:00.000Z",
+    "lastUpdated": "2026-10-01T00:00:00.000Z",
+    "scope": "GROUP",
+    "status": "ACTIVE",
+    "statusChanged": "2025-02-01T00:00:00.000Z",
+    "passwordChanged": null,
+    "syncState": "SYNCHRONIZED",
+    "credentials": {
+     "userName": "kat@example.com"
+    },
+    "profile": {
+     "role": "Standard"
+    },
+    "_links": {
+     "self": {
+      "href": "https://acme.okta.com/api/v1/users/00u4kat"
+     }
+    }
+   }
+  ],
+  "0oa2github": [
+   {
+    "id": "00u1ada",
+    "externalId": "ext-00u1ada",
+    "created": "2025-02-01T00:00:00.000Z",
+    "lastUpdated": "2026-10-01T00:00:00.000Z",
+    "scope": "GROUP",
+    "status": "ACTIVE",
+    "statusChanged": "2025-02-01T00:00:00.000Z",
+    "passwordChanged": null,
+    "syncState": "SYNCHRONIZED",
+    "credentials": {
+     "userName": "ada-l"
+    },
+    "profile": {
+     "role": "Standard"
+    },
+    "_links": {
+     "self": {
+      "href": "https://acme.okta.com/api/v1/users/00u1ada"
+     }
+    }
+   },
+   {
+    "id": "00u2grace",
+    "externalId": "ext-00u2grace",
+    "created": "2025-02-01T00:00:00.000Z",
+    "lastUpdated": "2026-10-01T00:00:00.000Z",
+    "scope": "GROUP",
+    "status": "ACTIVE",
+    "statusChanged": "2025-02-01T00:00:00.000Z",
+    "passwordChanged": null,
+    "syncState": "SYNCHRONIZED",
+    "credentials": {
+     "userName": "ghopper"
+    },
+    "profile": {
+     "role": "Standard"
+    },
+    "_links": {
+     "self": {
+      "href": "https://acme.okta.com/api/v1/users/00u2grace"
+     }
+    }
+   }
+  ]
+ },
+ "app_groups": {
+  "0oa1salesforce": [
+   {
+    "id": "00g3sales",
+    "lastUpdated": "2025-02-01T00:00:00.000Z",
+    "priority": 0,
+    "profile": {
+     "role": "Sales User"
+    }
+   }
+  ],
+  "0oa2github": [
+   {
+    "id": "00g2eng",
+    "lastUpdated": "2025-02-01T00:00:00.000Z",
+    "priority": 0,
+    "profile": {}
+   },
+   {
+    "id": "00g5admins",
+    "lastUpdated": "2025-03-01T00:00:00.000Z",
+    "priority": 1,
+    "profile": {
+     "org_role": "admin"
+    }
+   }
+  ]
+ },
+ "group_rules": [
+  {
+   "type": "group_rule",
+   "id": "0pr1eng",
+   "name": "Engineers by department",
+   "status": "ACTIVE",
+   "created": "2025-02-01T00:00:00.000Z",
+   "lastUpdated": "2025-02-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "users": {
+      "exclude": [
+       "00u5linus"
+      ]
+     },
+     "groups": {
+      "exclude": []
+     }
+    },
+    "expression": {
+     "value": "user.department==\"Engineering\"",
+     "type": "urn:okta:expression:1.0"
+    }
+   },
+   "actions": {
+    "assignUserToGroups": {
+     "groupIds": [
+      "00g2eng"
+     ]
+    }
+   }
+  },
+  {
+   "type": "group_rule",
+   "id": "0pr2legacy",
+   "name": "Legacy contractors",
+   "status": "INVALID",
+   "created": "2024-06-01T00:00:00.000Z",
+   "lastUpdated": "2026-01-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "users": {
+      "exclude": []
+     },
+     "groups": {
+      "exclude": [
+       "00g5admins"
+      ]
+     }
+    },
+    "expression": {
+     "value": "user.contractor==true",
+     "type": "urn:okta:expression:1.0"
+    }
+   },
+   "actions": {
+    "assignUserToGroups": {
+     "groupIds": [
+      "00g9deleted"
+     ]
+    }
+   }
+  }
+ ],
+ "policies": [
+  {
+   "id": "00p1signon",
+   "type": "OKTA_SIGN_ON",
+   "name": "Default Policy",
+   "description": "The default global session policy",
+   "priority": 2,
+   "system": true,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p1signon"
+    }
+   }
+  },
+  {
+   "id": "00p2adminsso",
+   "type": "OKTA_SIGN_ON",
+   "name": "Admins MFA",
+   "description": null,
+   "priority": 1,
+   "system": false,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p2adminsso"
+    }
+   }
+  },
+  {
+   "id": "00p3pwd",
+   "type": "PASSWORD",
+   "name": "Default Policy",
+   "description": null,
+   "priority": 2,
+   "system": true,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p3pwd"
+    }
+   }
+  },
+  {
+   "id": "00p4strong",
+   "type": "PASSWORD",
+   "name": "Strong Passwords",
+   "description": "16+ characters for admins",
+   "priority": 1,
+   "system": false,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p4strong"
+    }
+   }
+  },
+  {
+   "id": "00p5mfa",
+   "type": "MFA_ENROLL",
+   "name": "Default Policy",
+   "description": null,
+   "priority": 1,
+   "system": true,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p5mfa"
+    }
+   }
+  },
+  {
+   "id": "00p6idp",
+   "type": "IDP_DISCOVERY",
+   "name": "Idp Discovery Policy",
+   "description": null,
+   "priority": 1,
+   "system": true,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p6idp"
+    }
+   }
+  },
+  {
+   "id": "00p7access",
+   "type": "ACCESS_POLICY",
+   "name": "Any two factors",
+   "description": null,
+   "priority": 1,
+   "system": false,
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p7access"
+    }
+   }
+  },
+  {
+   "id": "00p8profile",
+   "type": "PROFILE_ENROLLMENT",
+   "name": "Default Policy",
+   "description": null,
+   "priority": 1,
+   "system": true,
+   "status": "INACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-03-01T00:00:00.000Z",
+   "conditions": {
+    "people": {
+     "groups": {
+      "include": [
+       "00g1everyone"
+      ]
+     }
+    }
+   },
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/policies/00p8profile"
+    }
+   }
+  }
+ ],
+ "policy_rules": {
+  "00p1signon": [
+   {
+    "id": "0pr1adminmfa",
+    "name": "Admins require MFA",
+    "type": "SIGN_ON",
+    "status": "ACTIVE",
+    "priority": 1,
+    "system": false,
+    "created": "2025-01-01T00:00:00.000Z",
+    "lastUpdated": "2026-03-01T00:00:00.000Z",
+    "conditions": {
+     "people": {
+      "groups": {
+       "include": [
+        "00g5admins"
+       ]
+      }
+     },
+     "network": {
+      "connection": "ANYWHERE"
+     }
+    },
+    "actions": {
+     "signon": {
+      "access": "ALLOW",
+      "requireFactor": true,
+      "factorPromptMode": "ALWAYS"
+     }
+    }
+   },
+   {
+    "id": "0pr2default",
+    "name": "Default Rule",
+    "type": "SIGN_ON",
+    "status": "ACTIVE",
+    "priority": 2,
+    "system": true,
+    "created": "2024-01-01T00:00:00.000Z",
+    "lastUpdated": "2024-01-01T00:00:00.000Z",
+    "conditions": {
+     "network": {
+      "connection": "ANYWHERE"
+     }
+    },
+    "actions": {
+     "signon": {
+      "access": "ALLOW",
+      "requireFactor": false,
+      "session": {
+       "maxSessionIdleMinutes": 120
+      }
+     }
+    }
+   }
+  ]
+ },
+ "authorization_servers": [
+  {
+   "id": "default",
+   "name": "default",
+   "description": "Default Authorization Server",
+   "audiences": [
+    "api://default"
+   ],
+   "issuer": "https://acme.okta.com/oauth2/default",
+   "issuerMode": "ORG_URL",
+   "status": "ACTIVE",
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2024-01-01T00:00:00.000Z",
+   "credentials": {
+    "signing": {
+     "rotationMode": "AUTO",
+     "lastRotated": "2026-09-01T00:00:00.000Z",
+     "nextRotation": "2026-12-01T00:00:00.000Z",
+     "kid": "kid-default-1"
+    }
+   }
+  },
+  {
+   "id": "aus2partner",
+   "name": "Partner API",
+   "description": "Tokens for partner integrations",
+   "audiences": [
+    "api://partners",
+    "https://partners.example.com"
+   ],
+   "issuer": "https://acme.okta.com/oauth2/aus2partner",
+   "issuerMode": "CUSTOM_URL",
+   "status": "INACTIVE",
+   "created": "2025-05-01T00:00:00.000Z",
+   "lastUpdated": "2025-06-01T00:00:00.000Z",
+   "credentials": {
+    "signing": {
+     "rotationMode": "MANUAL",
+     "lastRotated": "2025-05-01T00:00:00.000Z",
+     "nextRotation": null,
+     "kid": "kid-partner"
+    }
+   }
+  }
+ ],
+ "user_roles": {
+  "00u1ada": [
+   {
+    "id": "ra1super",
+    "label": "Super Administrator",
+    "type": "SUPER_ADMIN",
+    "status": "ACTIVE",
+    "created": "2025-01-01T00:00:00.000Z",
+    "lastUpdated": "2025-01-01T00:00:00.000Z",
+    "assignmentType": "USER"
+   }
+  ],
+  "00u4kat": [
+   {
+    "id": "ra2helpdesk",
+    "label": "Help Desk Administrator",
+    "type": "HELP_DESK_ADMIN",
+    "status": "ACTIVE",
+    "created": "2025-01-01T00:00:00.000Z",
+    "lastUpdated": "2025-01-01T00:00:00.000Z",
+    "assignmentType": "GROUP"
+   },
+   {
+    "id": "ra3custom",
+    "label": "Sales Ops Reviewer",
+    "type": "CUSTOM",
+    "status": "ACTIVE",
+    "created": "2025-01-01T00:00:00.000Z",
+    "lastUpdated": "2025-01-01T00:00:00.000Z",
+    "assignmentType": "USER",
+    "role": "cr0salesops",
+    "resource-set": "iam0salesset"
+   }
+  ]
+ },
+ "group_roles": {
+  "00g5admins": [
+   {
+    "id": "ra2helpdesk",
+    "label": "Help Desk Administrator",
+    "type": "HELP_DESK_ADMIN",
+    "status": "ACTIVE",
+    "created": "2025-01-01T00:00:00.000Z",
+    "lastUpdated": "2025-01-01T00:00:00.000Z",
+    "assignmentType": "GROUP"
+   }
+  ]
+ },
+ "role_assignees": [
+  "00u1ada",
+  "00u4kat"
+ ],
+ "devices": [
+  {
+   "id": "guo1mac",
+   "status": "ACTIVE",
+   "created": "2025-03-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-20T00:00:00.000Z",
+   "profile": {
+    "displayName": "Ada's MacBook Pro",
+    "platform": "MACOS",
+    "manufacturer": "Apple",
+    "model": "MacBookPro18,3",
+    "osVersion": "15.1",
+    "serialNumber": "C02ADA",
+    "udid": "udid-guo1mac",
+    "registered": true,
+    "secureHardwarePresent": true,
+    "diskEncryptionType": "ALL_INTERNAL_VOLUMES"
+   },
+   "resourceType": "UDDevice",
+   "resourceDisplayName": {
+    "value": "Ada's MacBook Pro",
+    "sensitive": false
+   },
+   "resourceId": "guo1mac",
+   "_embedded_users": [
+    "00u1ada"
+   ],
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/devices/guo1mac"
+    }
+   }
+  },
+  {
+   "id": "guo2win",
+   "status": "ACTIVE",
+   "created": "2025-03-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-20T00:00:00.000Z",
+   "profile": {
+    "displayName": "GRACE-PC",
+    "platform": "WINDOWS",
+    "manufacturer": "Dell",
+    "model": "Latitude 7440",
+    "osVersion": "10.0.22631",
+    "serialNumber": "DL-GRACE",
+    "udid": "udid-guo2win",
+    "registered": true,
+    "secureHardwarePresent": false,
+    "diskEncryptionType": "NONE"
+   },
+   "resourceType": "UDDevice",
+   "resourceDisplayName": {
+    "value": "GRACE-PC",
+    "sensitive": false
+   },
+   "resourceId": "guo2win",
+   "_embedded_users": [
+    "00u2grace"
+   ],
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/devices/guo2win"
+    }
+   }
+  },
+  {
+   "id": "guo3phone",
+   "status": "SUSPENDED",
+   "created": "2025-03-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-20T00:00:00.000Z",
+   "profile": {
+    "displayName": "Kat's iPhone",
+    "platform": "IOS",
+    "manufacturer": "Apple",
+    "model": "iPhone16,1",
+    "osVersion": "18.1",
+    "serialNumber": "F2KAT",
+    "udid": "udid-guo3phone",
+    "registered": true,
+    "secureHardwarePresent": true,
+    "diskEncryptionType": "ALL_INTERNAL_VOLUMES"
+   },
+   "resourceType": "UDDevice",
+   "resourceDisplayName": {
+    "value": "Kat's iPhone",
+    "sensitive": false
+   },
+   "resourceId": "guo3phone",
+   "_embedded_users": [
+    "00u4kat"
+   ],
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/devices/guo3phone"
+    }
+   }
+  },
+  {
+   "id": "guo4lab",
+   "status": "DEACTIVATED",
+   "created": "2025-03-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-20T00:00:00.000Z",
+   "profile": {
+    "displayName": "LAB-PC-07",
+    "platform": "WINDOWS",
+    "manufacturer": "Dell",
+    "model": "OptiPlex 7090",
+    "osVersion": "10.0.19045",
+    "serialNumber": "DL-LAB7",
+    "udid": "udid-guo4lab",
+    "registered": true,
+    "secureHardwarePresent": false,
+    "diskEncryptionType": "NONE"
+   },
+   "resourceType": "UDDevice",
+   "resourceDisplayName": {
+    "value": "LAB-PC-07",
+    "sensitive": false
+   },
+   "resourceId": "guo4lab",
+   "_embedded_users": [],
+   "_links": {
+    "self": {
+     "href": "https://acme.okta.com/api/v1/devices/guo4lab"
+    }
+   }
+  }
+ ],
+ "zones": [
+  {
+   "type": "IP",
+   "id": "nzo1legacy",
+   "name": "LegacyIpZone",
+   "status": "ACTIVE",
+   "usage": "POLICY",
+   "system": true,
+   "created": "2024-01-01T00:00:00.000Z",
+   "lastUpdated": "2025-01-01T00:00:00.000Z",
+   "gateways": [
+    {
+     "type": "CIDR",
+     "value": "10.0.0.0/8"
+    }
+   ],
+   "proxies": null
+  },
+  {
+   "type": "IP",
+   "id": "nzo2block",
+   "name": "Blocked IPs",
+   "status": "ACTIVE",
+   "usage": "BLOCKLIST",
+   "system": false,
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-10-01T00:00:00.000Z",
+   "gateways": [
+    {
+     "type": "CIDR",
+     "value": "203.0.113.0/24"
+    },
+    {
+     "type": "RANGE",
+     "value": "198.51.100.7-198.51.100.9"
+    }
+   ],
+   "proxies": null
+  },
+  {
+   "type": "DYNAMIC",
+   "id": "nzo3geo",
+   "name": "Allowed countries",
+   "status": "ACTIVE",
+   "usage": "POLICY",
+   "system": false,
+   "created": "2025-01-01T00:00:00.000Z",
+   "lastUpdated": "2026-02-01T00:00:00.000Z",
+   "locations": [
+    {
+     "country": "US",
+     "region": null
+    },
+    {
+     "country": "CA",
+     "region": "CA-ON"
+    }
+   ],
+   "asns": [
+    "13335"
+   ],
+   "proxyType": "NOT_TOR"
+  }
+ ],
+ "logs": [
+  {
+   "uuid": "evt-0001",
+   "published_offset_minutes": 60,
+   "eventType": "user.session.start",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "User login to Okta",
+   "actor": {
+    "id": "00u1ada",
+    "type": "User",
+    "alternateId": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0001",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0001"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0002",
+   "published_offset_minutes": 120,
+   "eventType": "user.session.start",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "User login to Okta",
+   "actor": {
+    "id": "00u3alan",
+    "type": "User",
+    "alternateId": "alan@example.com",
+    "displayName": "Alan Turing",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "203.0.113.9",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "FAILURE",
+    "reason": "INVALID_CREDENTIALS"
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0002",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0002"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "203.0.113.9"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0003",
+   "published_offset_minutes": 125,
+   "eventType": "user.session.start",
+   "version": "0",
+   "severity": "WARN",
+   "legacyEventType": null,
+   "displayMessage": "User login to Okta",
+   "actor": {
+    "id": "00u3alan",
+    "type": "User",
+    "alternateId": "alan@example.com",
+    "displayName": "Alan Turing",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "203.0.113.9",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "FAILURE",
+    "reason": "INVALID_CREDENTIALS"
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0003",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0003"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "203.0.113.9"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0004",
+   "published_offset_minutes": 59,
+   "eventType": "user.authentication.auth_via_mfa",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "Authentication of user via MFA",
+   "actor": {
+    "id": "00u1ada",
+    "type": "User",
+    "alternateId": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0004",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0004"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0005",
+   "published_offset_minutes": 300,
+   "eventType": "policy.lifecycle.update",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "Update policy",
+   "actor": {
+    "id": "00u1ada",
+    "type": "User",
+    "alternateId": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [
+    {
+     "id": "00p1signon",
+     "type": "PolicyEntity",
+     "alternateId": "Default Policy",
+     "displayName": "Default Policy",
+     "detailEntry": null
+    }
+   ],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0005",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0005"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0006",
+   "published_offset_minutes": 2880,
+   "eventType": "user.session.start",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "User login to Okta",
+   "actor": {
+    "id": "00u2grace",
+    "type": "User",
+    "alternateId": "grace@example.com",
+    "displayName": "Grace Hopper",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "FAILURE",
+    "reason": "VERIFICATION_ERROR"
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0006",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0006"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0007",
+   "published_offset_minutes": 14400,
+   "eventType": "application.provision.user.push",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "Push new user to app",
+   "actor": {
+    "id": "0oa0okta",
+    "type": "SystemPrincipal",
+    "alternateId": "system@okta.com",
+    "displayName": "Okta System",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [
+    {
+     "id": "0oa1salesforce",
+     "type": "AppInstance",
+     "alternateId": "Salesforce",
+     "displayName": "Salesforce",
+     "detailEntry": null
+    },
+    {
+     "id": "00u4kat",
+     "type": "User",
+     "alternateId": "kat@example.com",
+     "displayName": "Katherine Johnson",
+     "detailEntry": null
+    }
+   ],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0007",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0007"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0008",
+   "published_offset_minutes": 43200,
+   "eventType": "user.session.start",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "User login to Okta",
+   "actor": {
+    "id": "00u4kat",
+    "type": "User",
+    "alternateId": "kat@example.com",
+    "displayName": "Katherine Johnson",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0008",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0008"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0009",
+   "published_offset_minutes": 144000,
+   "eventType": "system.api_token.create",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "Create API token",
+   "actor": {
+    "id": "00u1ada",
+    "type": "User",
+    "alternateId": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0009",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0009"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  },
+  {
+   "uuid": "evt-0010",
+   "published_offset_minutes": 30,
+   "eventType": "user.authentication.sso",
+   "version": "0",
+   "severity": "INFO",
+   "legacyEventType": null,
+   "displayMessage": "User single sign on to app",
+   "actor": {
+    "id": "00u1ada",
+    "type": "User",
+    "alternateId": "ada@example.com",
+    "displayName": "Ada Lovelace",
+    "detailEntry": null
+   },
+   "client": {
+    "userAgent": {
+     "rawUserAgent": "Mozilla/5.0 (Macintosh)",
+     "os": "Mac OS X",
+     "browser": "CHROME"
+    },
+    "zone": "null",
+    "device": "Computer",
+    "id": null,
+    "ipAddress": "198.51.100.20",
+    "geographicalContext": {
+     "city": "San Francisco",
+     "state": "California",
+     "country": "United States",
+     "postalCode": "94107",
+     "geolocation": {
+      "lat": 37.7697,
+      "lon": -122.3933
+     }
+    }
+   },
+   "outcome": {
+    "result": "SUCCESS",
+    "reason": null
+   },
+   "target": [
+    {
+     "id": "0oa1salesforce",
+     "type": "AppInstance",
+     "alternateId": "Salesforce",
+     "displayName": "Salesforce",
+     "detailEntry": null
+    }
+   ],
+   "transaction": {
+    "type": "WEB",
+    "id": "tx-0010",
+    "detail": {}
+   },
+   "debugContext": {
+    "debugData": {
+     "requestUri": "/idp/idx/identify",
+     "threatSuspected": "false"
+    }
+   },
+   "authenticationContext": {
+    "authenticationProvider": null,
+    "credentialProvider": null,
+    "credentialType": null,
+    "issuer": null,
+    "interface": null,
+    "authenticationStep": 0,
+    "externalSessionId": "sess-0010"
+   },
+   "securityContext": {
+    "asNumber": 13335,
+    "asOrg": "example",
+    "isp": "example",
+    "domain": "example.com",
+    "isProxy": false
+   },
+   "request": {
+    "ipChain": [
+     {
+      "ip": "198.51.100.20"
+     }
+    ]
+   }
+  }
+ ]
+}

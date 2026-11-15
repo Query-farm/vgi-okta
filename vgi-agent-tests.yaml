@@ -1,0 +1,61 @@
+# Private graders for the public vgi.agent_test_tasks in the worker's catalog metadata.
+# `vgi-lint lint --ai` runs an agent on each prompt and grades it (VGI920).
+#
+# Every okta function needs an `okta` secret pointing at an Okta org (the offline replay
+# org in test/mock_api/server.py works too). Directory and configuration data are stable
+# between the agent's run and the reference run, so those tasks compare against a
+# reference query; the System Log is time-relative, so that task uses check_sql.
+tasks:
+  - name: active_engineers
+    reference_sql: >-
+      SELECT login FROM okta.main.users() WHERE status = 'ACTIVE' AND department = 'Engineering' ORDER BY login
+  - name: deprovisioned_count
+    reference_sql: SELECT count(*) AS users FROM okta.main.users() WHERE status = 'DEPROVISIONED'
+  - name: user_lookup
+    reference_sql: SELECT last_login FROM okta.main.user('ada@example.com')
+  - name: user_memberships
+    reference_sql: >-
+      SELECT display_name FROM okta.main.user_groups(user_id := 'ada@example.com') ORDER BY display_name
+  - name: user_mfa
+    reference_sql: >-
+      SELECT factor_type, status FROM okta.main.user_factors(user_id := 'ada@example.com') ORDER BY factor_type
+  - name: group_count_by_type
+    reference_sql: SELECT group_type, count(*) AS groups FROM okta.main.groups() GROUP BY group_type ORDER BY group_type
+  - name: engineering_members
+    reference_sql: >-
+      SELECT m.login FROM okta.main.group_members() m JOIN okta.main.groups() g ON g.id = m.group_id
+      WHERE g.display_name = 'Engineering' ORDER BY m.login
+  - name: invalid_rules
+    reference_sql: SELECT name FROM okta.main.group_rules() WHERE status = 'INVALID' ORDER BY name
+  - name: active_apps
+    reference_sql: SELECT label, sign_on_mode FROM okta.main.apps() WHERE status = 'ACTIVE' ORDER BY label
+  - name: app_direct_assignments
+    reference_sql: >-
+      SELECT au.user_name FROM okta.main.app_users() au JOIN okta.main.apps() a ON a.id = au.app_id
+      WHERE a.label = 'Salesforce' AND au.scope = 'USER' ORDER BY au.user_name
+  - name: app_group_assignments
+    reference_sql: >-
+      SELECT g.display_name FROM okta.main.app_groups() ag JOIN okta.main.apps() a ON a.id = ag.app_id
+      JOIN okta.main.groups() g ON g.id = ag.group_id WHERE a.label = 'Salesforce' ORDER BY g.display_name
+  - name: password_policies
+    reference_sql: SELECT name FROM okta.main.policies WHERE type = 'PASSWORD' ORDER BY priority
+  - name: sign_on_rules
+    reference_sql: >-
+      SELECT r.name FROM okta.main.policy_rules() r JOIN okta.main.policies p ON p.id = r.policy_id
+      WHERE p.type = 'OKTA_SIGN_ON' AND p.system ORDER BY r.priority
+  - name: auth_server_issuers
+    reference_sql: SELECT name, issuer FROM okta.main.authorization_servers() ORDER BY name
+  - name: super_admins
+    reference_sql: >-
+      SELECT u.login FROM okta.main.admin_role_assignments() r JOIN okta.main.users() u ON u.id = r.principal_id
+      WHERE r.role_type = 'SUPER_ADMIN' ORDER BY u.login
+  - name: devices_by_platform
+    reference_sql: >-
+      SELECT operating_system, count(*) AS devices FROM okta.main.devices() GROUP BY operating_system ORDER BY operating_system
+  - name: blocklist_zones
+    reference_sql: SELECT name FROM okta.main.network_zones WHERE usage = 'BLOCKLIST' ORDER BY name
+  # The System Log is time-relative, so grade on shape: the failing actors, distinct.
+  - name: failed_signins
+    check_sql: >-
+      SELECT count(*) >= 1 AND count(*) <= (SELECT count(DISTINCT actor_alternate_id) FROM okta.main.system_log()
+      WHERE published >= TIMESTAMPTZ '2026-11-10 00:00:00+00' AND outcome_result = 'FAILURE') FROM result
