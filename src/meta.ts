@@ -112,6 +112,9 @@ export const CATALOG_DOC_MD =
   "header paging and Okta's rate-limit headers are handled for you.\n\n" +
   SOURCES_MD;
 
+export const SCHEMA_COMMENT =
+  "Read-only Okta Management API collections: directory, applications, security configuration and audit events.";
+
 export const SCHEMA_DOC_LLM =
   "Okta Management API collections as SQL. Org-wide collections are table functions with optional named " +
   "arguments (a raw Okta `search := ` expression, keyword `q := `, `page_size := `) or plain tables when " +
