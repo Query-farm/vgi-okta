@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "type": "module",
   "description": "Okta Workforce Identity (users, groups, apps, policies, admin roles, devices, System Log) as SQL tables in DuckDB.",
